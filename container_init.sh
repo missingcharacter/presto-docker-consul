@@ -2,8 +2,9 @@
 
 # Environment variable defaults
 : ${ENV:=DEV}
-: ${CONSUL_ADDR:=172.17.42.1:8500}
+: ${CONSUL_ADDR:=172.17.0.1:8500}
 : ${CONSUL_PREFIX:=/config/presto}
+# Valid roles are: worker and master
 : ${PRESTO_ROLE:=worker}
 : ${HEAP_PERCENT:=0.5}
 
@@ -34,10 +35,10 @@ cat > /opt/presto/conf/jvm.config <<EOT
 EOT
 
 # Start fsconsul to generate our catalog configs
-${GOPATH}/bin/fsconsul -addr=${CONSUL_ADDR} -once=true ${CONSUL_PREFIX}/catalog/ /opt/presto/conf/catalog/
+/usr/local/go/bin/fsconsul -addr=${CONSUL_ADDR} -once=true ${CONSUL_PREFIX}/catalog/ /opt/presto/conf/catalog/
 
 # Start fsconsul again to make the node configs
-${GOPATH}/bin/fsconsul -addr=${CONSUL_ADDR} -once=true ${CONSUL_PREFIX}/${PRESTO_ROLE} /opt/presto/conf/
+/usr/local/go/bin/fsconsul -addr=${CONSUL_ADDR} -once=true ${CONSUL_PREFIX}/${PRESTO_ROLE} /opt/presto/conf/
 
 # Now start presto and let it run in the foreground
 /opt/presto/latest/bin/launcher run
