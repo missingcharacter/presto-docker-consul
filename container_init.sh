@@ -2,8 +2,9 @@
 
 # Environment variable defaults
 : ${ENV:=DEV}
-: ${CONSUL_ADDR:=172.17.42.1:8500}
+: ${CONSUL_ADDR:=172.17.0.1:8500}
 : ${CONSUL_PREFIX:=/config/presto}
+# Valid roles are: worker and master
 : ${PRESTO_ROLE:=worker}
 : ${HEAP_PERCENT:=0.5}
 
