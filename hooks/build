@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# hooks/build
+# https://docs.docker.com/docker-cloud/builds/advanced/
+set -euo pipefail
+IFS=$'\n\t'
+
+# $IMAGE_NAME var is injected into the build so the tag is correct.
+echo "[***] Build hook running"
+
+docker build \
+    --build-arg "BUILD_VERSION=$(cat .presto-release)" \
+    -t "${IMAGE_NAME}" .
